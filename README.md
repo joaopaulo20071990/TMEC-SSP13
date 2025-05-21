@@ -89,6 +89,9 @@
   <div id="contador">00:00:00</div>
 
   <script>
+    // URL do seu Google Apps Script Web App (substitua pela sua)
+    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxuGFrZWxZhnij92n79nURVP3KceDbUTLKWR9hzgvq-agOIK3-4QJVprhxLHCNBFyQ/exec";
+
     const SENHA_CORRETA = "MELI123";
 
     let totalSegundos = 0;
@@ -191,7 +194,7 @@
       // Enviar dados para a base (Google Apps Script)
       enviarDados();
 
-      iniciarBtn.disabled = true; // não pode reiniciar sem resetar
+      iniciarBtn.disabled = true; // impedir reiniciar sem reset
       pararBtn.disabled = true;
       resetarBtn.disabled = false;
     });
@@ -225,9 +228,7 @@
       const transportadora = transportadoraInput.value.trim();
       const tempo = formatarTempo(totalSegundos);
 
-      const url = "https://script.google.com/macros/s/AKfycbxuGFrZWxZhnij92n79nURVP3KceDbUTLKWR9hzgvq-agOIK3-4QJVprhxLHCNBFyQ/exec";
-
-      fetch(url, {
+      fetch(URL_WEB_APP, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -240,17 +241,22 @@
           tempo
         })
       })
-        .then(res => res.json())
-        .then(res => {
-          if(res.status === "success") {
-            alert("Dados enviados com sucesso!");
-          } else {
-            alert("Erro ao enviar dados: " + (res.message || "Desconhecido"));
-          }
-        })
-        .catch(err => {
-          alert("Falha ao enviar dados: " + err);
-        });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if(data.status === "success") {
+          alert("Dados enviados com sucesso!");
+        } else {
+          alert("Erro ao enviar dados: " + (data.message || "Desconhecido"));
+        }
+      })
+      .catch(error => {
+        alert("Falha ao enviar dados: " + error);
+      });
     }
 
     // Inicialização
