@@ -63,7 +63,7 @@
 </head>
 <body>
 
-  <h1>MERCADO LIVRE - SSP13</h1>
+  <h1>MERCADO LIVRE</h1>
 
   <div id="contador">00:00:00</div>
 
