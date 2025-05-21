@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Contador com Fundo de Tela Colorido</title>
+  <title>Contador com Fundo de Tela Transparente</title>
   <style>
     /* Reset básico */
     * {
@@ -47,8 +47,8 @@
       justify-content: center;
       margin-bottom: 30px;
       user-select: none;
-      background-color: transparent; /* Fundo transparente para deixar o body aparecer */
-      color: #2c3e50; /* Texto escuro por padrão */
+      background-color: transparent;
+      color: #2c3e50;
       transition: color 0.5s ease;
     }
 
@@ -122,12 +122,14 @@
     #dadosInseridos {
       width: 100%;
       font-size: 18px;
-      color: #34495e;
+      /* Informações SEM fundo para ficar transparente no fundo da tela */
+      color: #fff; /* texto claro para aparecer no fundo colorido */
       line-height: 1.5;
       white-space: pre-wrap;
       text-align: center;
       min-height: 70px;
       user-select: none;
+      /* sem background-color, sem sombra */
     }
 
     @media(max-width: 400px) {
@@ -214,12 +216,15 @@
       if (segundos <= 15) {
         document.body.style.backgroundColor = "green";
         contadorContainer.style.color = "white";
+        dadosInseridos.style.color = "white";
       } else if (segundos <= 30) {
         document.body.style.backgroundColor = "yellow";
         contadorContainer.style.color = "#2c3e50";
+        dadosInseridos.style.color = "#2c3e50";
       } else {
         document.body.style.backgroundColor = "red";
         contadorContainer.style.color = "white";
+        dadosInseridos.style.color = "white";
       }
     }
 
@@ -298,6 +303,7 @@
       contadorElement.textContent = formatarTempo(totalSegundos);
       document.body.style.backgroundColor = 'white';
       contadorContainer.style.color = '#2c3e50';
+      dadosInseridos.style.color = '#34495e';
 
       placaInput.value = "";
       docaInput.value = "";
@@ -343,6 +349,7 @@
 
     // Inicialização
     contadorElement.textContent = formatarTempo(totalSegundos);
+    dadosInseridos.style.color = "#34495e";
     iniciarBtn.disabled = true;
     pararBtn.disabled = true;
     resetarBtn.disabled = true;
