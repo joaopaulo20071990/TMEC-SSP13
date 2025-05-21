@@ -83,7 +83,7 @@
   <div>
     <button id="iniciarBtn" disabled>Iniciar</button>
     <button id="pararBtn" disabled>Parar</button>
-    <button id="resetarBtn" disabled>Resetar</button>
+    <!-- botão resetar removido -->
   </div>
 
   <div id="dadosInseridos"></div>
@@ -98,7 +98,7 @@
     const contadorElement = document.getElementById('contador');
     const iniciarBtn = document.getElementById('iniciarBtn');
     const pararBtn = document.getElementById('pararBtn');
-    const resetarBtn = document.getElementById('resetarBtn');
+    // resetarBtn removido
 
     const placaInput = document.getElementById('placa');
     const docaInput = document.getElementById('doca');
@@ -140,7 +140,7 @@
         intervalo = null;
         iniciarBtn.disabled = false;
         pararBtn.disabled = true;
-        resetarBtn.disabled = false;
+        // resetarBtn removido
       }
     }
 
@@ -173,7 +173,7 @@
 
       iniciarBtn.disabled = true;
       pararBtn.disabled = false;
-      resetarBtn.disabled = false;
+      // resetarBtn removido
 
       intervalo = setInterval(atualizarContador, 1000);
     });
@@ -192,16 +192,7 @@
 
       enviarDados();
 
-      iniciarBtn.disabled = true;
-      pararBtn.disabled = true;
-      resetarBtn.disabled = false;
-    });
-
-    resetarBtn.addEventListener('click', () => {
-      if (intervalo) {
-        clearInterval(intervalo);
-        intervalo = null;
-      }
+      // Aqui fazemos o reset automático (limpa campos, contador, etc)
       totalSegundos = 0;
       contadorElement.textContent = formatarTempo(totalSegundos);
       document.body.style.backgroundColor = '';
@@ -217,7 +208,7 @@
 
       iniciarBtn.disabled = true;
       pararBtn.disabled = true;
-      resetarBtn.disabled = true;
+      // resetarBtn removido
     });
 
     function enviarDados() {
@@ -262,7 +253,7 @@
     document.body.style.backgroundColor = '';
     iniciarBtn.disabled = true;
     pararBtn.disabled = true;
-    resetarBtn.disabled = true;
+    // resetarBtn removido
   </script>
 
 </body>
