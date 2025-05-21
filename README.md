@@ -225,7 +225,7 @@
       const transportadora = transportadoraInput.value.trim();
       const tempo = formatarTempo(totalSegundos);
 
-      const url = "INSIRA_AQUI_A_URL_DO_SEU_WEB_APP_DO_GOOGLE_APPS_SCRIPT";
+      const url = "https://script.google.com/macros/s/AKfycbxuGFrZWxZhnij92n79nURVP3KceDbUTLKWR9hzgvq-agOIK3-4QJVprhxLHCNBFyQ/exec";
 
       fetch(url, {
         method: "POST",
