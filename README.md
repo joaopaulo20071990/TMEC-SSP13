@@ -65,6 +65,8 @@
 
   <h1>TEMPO MÉDIO DE CARREGAMENTO SSP13</h1>
 
+  <div id="contador">00:00:00</div>
+
   <div>
     <label for="placa">Placa:</label><br/>
     <input type="text" id="placa" placeholder="Digite a placa" />
@@ -85,8 +87,6 @@
   </div>
 
   <div id="dadosInseridos"></div>
-
-  <div id="contador">00:00:00</div>
 
   <script>
     const URL_WEB_APP = "URL_DO_SEU_WEB_APP"; // coloque aqui sua URL do Apps Script
