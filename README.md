@@ -63,7 +63,7 @@
 </head>
 <body>
 
-  <h1>Controle de Tempo com Senha e Envio</h1>
+  <h1>TEMPO MÉDIO DE CARREGAMENTO SSP13</h1>
 
   <div>
     <label for="placa">Placa:</label><br/>
