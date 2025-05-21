@@ -4,112 +4,165 @@
   <meta charset="UTF-8" />
   <title>Contador com Senha e Envio</title>
   <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
     }
+
     body {
       display: flex;
-      justify-content: center;  /* centraliza horizontalmente */
-      align-items: center;      /* centraliza verticalmente */
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-      transition: background-color 0.5s ease;
-      background-color: white;
+      justify-content: center;  /* horizontal */
+      align-items: center;      /* vertical */
       min-height: 100vh;
+      padding: 20px;
     }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f7f9fc;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
     #contador {
       font-size: 96px;
       font-weight: bold;
       color: #2c3e50;
       font-variant-numeric: tabular-nums;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       user-select: none;
     }
+
+    .inputs-container {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
     label {
-      display: inline-block;
-      margin-top: 10px;
-      margin-bottom: 5px;
       font-weight: bold;
       font-size: 16px;
       color: #2c3e50;
+      display: block;
+      margin-bottom: 6px;
     }
+
     input[type="text"] {
+      width: 100%;
+      padding: 8px 12px;
       font-size: 16px;
-      padding: 7px;
-      width: 250px;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      transition: border-color 0.3s;
     }
-    .inputs-container {
-      margin-bottom: 40px;
-      text-align: center;
+
+    input[type="text"]:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
     }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
     button {
+      flex: 1 1 100px;
       font-size: 18px;
-      padding: 10px 20px;
-      margin: 10px 8px;
+      padding: 12px 16px;
       cursor: pointer;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       background-color: #3498db;
       color: white;
       transition: background-color 0.3s;
+      user-select: none;
+      min-width: 100px;
     }
+
     button:disabled {
       background-color: #999;
       cursor: not-allowed;
     }
+
     button:hover:not(:disabled) {
       background-color: #2980b9;
     }
+
     #dadosInseridos {
-      margin-top: 25px;
+      width: 100%;
       font-size: 18px;
       color: #34495e;
       line-height: 1.5;
-      max-width: 400px;
-      text-align: center;
       white-space: pre-wrap;
+      text-align: center;
+      min-height: 70px;
       user-select: none;
+    }
+
+    @media(max-width: 400px) {
+      .container {
+        padding: 20px 25px;
+      }
+      #contador {
+        font-size: 72px;
+      }
+      button {
+        min-width: 80px;
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="inputs-container">
-    <div>
-      <label for="placa">Placa:</label><br/>
+  <div class="container">
+    <div id="contador">00:00:00</div>
+
+    <div class="inputs-container">
+      <label for="placa">Placa:</label>
       <input type="text" id="placa" placeholder="Digite a placa" />
-    </div>
-    <div>
-      <label for="doca">Doca:</label><br/>
+
+      <label for="doca">Doca:</label>
       <input type="text" id="doca" placeholder="Digite a doca" />
-    </div>
-    <div>
-      <label for="transportadora">Transportadora:</label><br/>
+
+      <label for="transportadora">Transportadora:</label>
       <input type="text" id="transportadora" placeholder="Digite a transportadora" />
     </div>
+
+    <div class="buttons-container">
+      <button id="iniciarBtn" disabled>Iniciar</button>
+      <button id="pararBtn" disabled>Parar</button>
+      <button id="resetarBtn" disabled>Resetar</button>
+    </div>
+
+    <div id="dadosInseridos"></div>
   </div>
-
-  <div id="contador">00:00:00</div>
-
-  <div>
-    <button id="iniciarBtn" disabled>Iniciar</button>
-    <button id="pararBtn" disabled>Parar</button>
-    <button id="resetarBtn" disabled>Resetar</button>
-  </div>
-
-  <div id="dadosInseridos"></div>
 
   <script>
-    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxtZp5q79LkTadzus7tq2KBr_Sdg8lNFLP7DfjOTIG2u8cjcgq_yYiHSVexKAlTWsg/exec"; // substitua aqui
+    const URL_WEB_APP = "URL_DO_SEU_WEB_APP"; // substitua aqui
 
     const SENHA_CORRETA = "MELI123";
 
     let totalSegundos = 0;
-    const maxSegundos = 40 * 60; // 40 minutos (ajuste se desejar)
+    const maxSegundos = 40 * 60; // 40 minutos
     const contadorElement = document.getElementById('contador');
     const iniciarBtn = document.getElementById('iniciarBtn');
     const pararBtn = document.getElementById('pararBtn');
@@ -123,7 +176,6 @@
 
     let intervalo = null;
 
-    // Formatar segundos para HH:MM:SS
     function formatarTempo(segundos) {
       const hrs = Math.floor(segundos / 3600);
       const mins = Math.floor((segundos % 3600) / 60);
@@ -136,7 +188,6 @@
       );
     }
 
-    // Atualiza cor do fundo conforme tempo
     function atualizarFundo(segundos) {
       if (segundos <= 15) {
         document.body.style.backgroundColor = 'green';
@@ -147,7 +198,6 @@
       }
     }
 
-    // Atualiza contador e fundo a cada segundo
     function atualizarContador() {
       totalSegundos++;
       contadorElement.textContent = formatarTempo(totalSegundos);
@@ -162,7 +212,6 @@
       }
     }
 
-    // Verifica se campos foram preenchidos para habilitar o iniciar
     function validarCampos() {
       const placa = placaInput.value.trim();
       const doca = docaInput.value.trim();
@@ -171,12 +220,10 @@
       iniciarBtn.disabled = !(placa && doca && transportadora);
     }
 
-    // Eventos para validar inputs dinamicamente
     placaInput.addEventListener('input', validarCampos);
     docaInput.addEventListener('input', validarCampos);
     transportadoraInput.addEventListener('input', validarCampos);
 
-    // Evento para iniciar o contador
     iniciarBtn.addEventListener('click', () => {
       if (intervalo) return;
 
@@ -198,7 +245,6 @@
       intervalo = setInterval(atualizarContador, 1000);
     });
 
-    // Evento para parar o contador (solicita senha)
     pararBtn.addEventListener('click', () => {
       if (!intervalo) return;
 
@@ -211,16 +257,13 @@
       clearInterval(intervalo);
       intervalo = null;
 
-      // Não zera o contador, só para e mantém o valor exibido!
-
       enviarDados();
 
-      iniciarBtn.disabled = true;  // evitar reinício para manter controle
+      iniciarBtn.disabled = true;
       pararBtn.disabled = true;
       resetarBtn.disabled = false;
     });
 
-    // Evento para resetar tudo
     resetarBtn.addEventListener('click', () => {
       if (intervalo) {
         clearInterval(intervalo);
@@ -244,7 +287,6 @@
       resetarBtn.disabled = true;
     });
 
-    // Envia os dados para o Google Apps Script
     function enviarDados() {
       const placa = placaInput.value.trim();
       const doca = docaInput.value.trim();
@@ -275,7 +317,6 @@
 
     // Inicialização da página
     contadorElement.textContent = formatarTempo(totalSegundos);
-    document.body.style.backgroundColor = 'white';
     iniciarBtn.disabled = true;
     pararBtn.disabled = true;
     resetarBtn.disabled = true;
