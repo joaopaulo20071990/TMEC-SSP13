@@ -89,8 +89,7 @@
   <div id="contador">00:00:00</div>
 
   <script>
-    // URL do seu Google Apps Script Web App (substitua pela sua)
-    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxuGFrZWxZhnij92n79nURVP3KceDbUTLKWR9hzgvq-agOIK3-4QJVprhxLHCNBFyQ/exec";
+    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxtZp5q79LkTadzus7tq2KBr_Sdg8lNFLP7DfjOTIG2u8cjcgq_yYiHSVexKAlTWsg/exec"; // coloque aqui sua URL do Apps Script
 
     const SENHA_CORRETA = "MELI123";
 
@@ -191,10 +190,9 @@
       clearInterval(intervalo);
       intervalo = null;
 
-      // Enviar dados para a base (Google Apps Script)
       enviarDados();
 
-      iniciarBtn.disabled = true; // impedir reiniciar sem reset
+      iniciarBtn.disabled = true;
       pararBtn.disabled = true;
       resetarBtn.disabled = false;
     });
