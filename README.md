@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Contador com Senha e Envio</title>
+  <title>Contador com Fundo Colorido</title>
   <style>
     /* Reset básico */
     * {
@@ -23,6 +23,8 @@
       align-items: center;      /* vertical */
       min-height: 100vh;
       padding: 20px;
+      background-color: white;
+      transition: background-color 0.5s ease;
     }
 
     .container {
@@ -35,6 +37,19 @@
       padding: 30px 40px;
       border-radius: 10px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      transition: background-color 0.5s ease;
+    }
+
+    /* Novo contêiner para o relógio - terá fundo colorido igual ao body */
+    .contador-container {
+      width: 100%;
+      padding: 40px 10px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      transition: background-color 0.5s ease;
+      margin-bottom: 30px;
+      user-select: none;
     }
 
     #contador {
@@ -42,8 +57,7 @@
       font-weight: bold;
       color: #2c3e50;
       font-variant-numeric: tabular-nums;
-      margin-bottom: 30px;
-      user-select: none;
+      margin: 0;
     }
 
     .inputs-container {
@@ -121,6 +135,9 @@
       .container {
         padding: 20px 25px;
       }
+      .contador-container {
+        padding: 30px 5px;
+      }
       #contador {
         font-size: 72px;
       }
@@ -134,7 +151,10 @@
 <body>
 
   <div class="container">
-    <div id="contador">00:00:00</div>
+
+    <div class="contador-container" id="contadorContainer">
+      <div id="contador">00:00:00</div>
+    </div>
 
     <div class="inputs-container">
       <label for="placa">Placa:</label>
@@ -163,7 +183,10 @@
 
     let totalSegundos = 0;
     const maxSegundos = 40 * 60; // 40 minutos
+
     const contadorElement = document.getElementById('contador');
+    const contadorContainer = document.getElementById('contadorContainer');
+
     const iniciarBtn = document.getElementById('iniciarBtn');
     const pararBtn = document.getElementById('pararBtn');
     const resetarBtn = document.getElementById('resetarBtn');
@@ -191,10 +214,16 @@
     function atualizarFundo(segundos) {
       if (segundos <= 15) {
         document.body.style.backgroundColor = 'green';
+        contadorContainer.style.backgroundColor = 'green';
+        contadorContainer.style.color = 'white';
       } else if (segundos <= 30) {
         document.body.style.backgroundColor = 'yellow';
+        contadorContainer.style.backgroundColor = 'yellow';
+        contadorContainer.style.color = '#2c3e50';
       } else {
         document.body.style.backgroundColor = 'red';
+        contadorContainer.style.backgroundColor = 'red';
+        contadorContainer.style.color = 'white';
       }
     }
 
@@ -272,6 +301,8 @@
       totalSegundos = 0;
       contadorElement.textContent = formatarTempo(totalSegundos);
       document.body.style.backgroundColor = 'white';
+      contadorContainer.style.backgroundColor = 'transparent';
+      contadorContainer.style.color = '#2c3e50';
 
       placaInput.value = "";
       docaInput.value = "";
@@ -315,7 +346,7 @@
       });
     }
 
-    // Inicialização da página
+    // Inicialização
     contadorElement.textContent = formatarTempo(totalSegundos);
     iniciarBtn.disabled = true;
     pararBtn.disabled = true;
