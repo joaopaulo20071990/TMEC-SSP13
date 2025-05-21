@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Contador com Fundo Colorido</title>
+  <title>Contador com Fundo de Tela Colorido</title>
   <style>
     /* Reset básico */
     * {
@@ -15,6 +15,7 @@
       padding: 0;
       font-family: Arial, sans-serif;
       background-color: white;
+      transition: background-color 0.5s ease;
     }
 
     body {
@@ -23,8 +24,6 @@
       align-items: center;      /* vertical */
       min-height: 100vh;
       padding: 20px;
-      background-color: white;
-      transition: background-color 0.5s ease;
     }
 
     .container {
@@ -40,22 +39,22 @@
       transition: background-color 0.5s ease;
     }
 
-    /* Novo contêiner para o relógio - terá fundo colorido igual ao body */
     .contador-container {
       width: 100%;
       padding: 40px 10px;
       border-radius: 10px;
       display: flex;
       justify-content: center;
-      transition: background-color 0.5s ease;
       margin-bottom: 30px;
       user-select: none;
+      background-color: transparent; /* Fundo transparente para deixar o body aparecer */
+      color: #2c3e50; /* Texto escuro por padrão */
+      transition: color 0.5s ease;
     }
 
     #contador {
       font-size: 96px;
       font-weight: bold;
-      color: #2c3e50;
       font-variant-numeric: tabular-nums;
       margin: 0;
     }
@@ -177,7 +176,7 @@
   </div>
 
   <script>
-    const URL_WEB_APP = "URL_DO_SEU_WEB_APP"; // substitua aqui
+    const URL_WEB_APP = "URL_DO_SEU_WEB_APP"; // substitua aqui pela sua URL real
 
     const SENHA_CORRETA = "MELI123";
 
@@ -213,17 +212,14 @@
 
     function atualizarFundo(segundos) {
       if (segundos <= 15) {
-        document.body.style.backgroundColor = 'green';
-        contadorContainer.style.backgroundColor = 'green';
-        contadorContainer.style.color = 'white';
+        document.body.style.backgroundColor = "green";
+        contadorContainer.style.color = "white";
       } else if (segundos <= 30) {
-        document.body.style.backgroundColor = 'yellow';
-        contadorContainer.style.backgroundColor = 'yellow';
-        contadorContainer.style.color = '#2c3e50';
+        document.body.style.backgroundColor = "yellow";
+        contadorContainer.style.color = "#2c3e50";
       } else {
-        document.body.style.backgroundColor = 'red';
-        contadorContainer.style.backgroundColor = 'red';
-        contadorContainer.style.color = 'white';
+        document.body.style.backgroundColor = "red";
+        contadorContainer.style.color = "white";
       }
     }
 
@@ -301,7 +297,6 @@
       totalSegundos = 0;
       contadorElement.textContent = formatarTempo(totalSegundos);
       document.body.style.backgroundColor = 'white';
-      contadorContainer.style.backgroundColor = 'transparent';
       contadorContainer.style.color = '#2c3e50';
 
       placaInput.value = "";
