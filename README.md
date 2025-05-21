@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Contador e Dados de Entrada</title>
+  <title>Contador com Senha e Envio</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -57,24 +57,25 @@
       margin-left: auto;
       margin-right: auto;
       text-align: left;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
 
-  <h1>Controle de Tempo e Cadastro</h1>
+  <h1>Controle de Tempo com Senha e Envio</h1>
 
   <div>
     <label for="placa">Placa:</label><br/>
-    <input type="text" id="placa" name="placa" placeholder="Digite a placa" />
+    <input type="text" id="placa" placeholder="Digite a placa" />
   </div>
   <div>
     <label for="doca">Doca:</label><br/>
-    <input type="text" id="doca" name="doca" placeholder="Digite a doca" />
+    <input type="text" id="doca" placeholder="Digite a doca" />
   </div>
   <div>
     <label for="transportadora">Transportadora:</label><br/>
-    <input type="text" id="transportadora" name="transportadora" placeholder="Digite a transportadora" />
+    <input type="text" id="transportadora" placeholder="Digite a transportadora" />
   </div>
 
   <div>
@@ -88,7 +89,8 @@
   <div id="contador">00:00:00</div>
 
   <script>
-    // Variáveis do contador
+    const SENHA_CORRETA = "MELI123";
+
     let totalSegundos = 0;
     const maxSegundos = 40 * 60; // 40 minutos
     const contadorElement = document.getElementById('contador');
@@ -96,14 +98,14 @@
     const pararBtn = document.getElementById('pararBtn');
     const resetarBtn = document.getElementById('resetarBtn');
 
-    // Inputs do formulário para validar
     const placaInput = document.getElementById('placa');
     const docaInput = document.getElementById('doca');
     const transportadoraInput = document.getElementById('transportadora');
 
+    const dadosInseridos = document.getElementById('dadosInseridos');
+
     let intervalo = null;
 
-    // Função para formatar segundos em HH:MM:SS
     function formatarTempo(segundos) {
       const hrs = Math.floor(segundos / 3600);
       const mins = Math.floor((segundos % 3600) / 60);
@@ -116,7 +118,6 @@
       );
     }
 
-    // Atualiza cor de fundo conforme o tempo
     function atualizarFundo(segundos) {
       if (segundos <= 15) {
         document.body.style.backgroundColor = 'green';
@@ -141,61 +142,58 @@
       }
     }
 
-    // Função que valida os campos e habilita/desabilita o botão Iniciar
     function validarCampos() {
       const placa = placaInput.value.trim();
       const doca = docaInput.value.trim();
       const transportadora = transportadoraInput.value.trim();
 
-      if (placa !== '' && doca !== '' && transportadora !== '') {
-        iniciarBtn.disabled = false;
-      } else {
-        iniciarBtn.disabled = true;
-      }
+      const valido = placa !== "" && doca !== "" && transportadora !== "";
+      iniciarBtn.disabled = !valido;
     }
 
-    // Monitora mudanças nos inputs para habilitar o botão Iniciar
     placaInput.addEventListener('input', validarCampos);
     docaInput.addEventListener('input', validarCampos);
     transportadoraInput.addEventListener('input', validarCampos);
 
     iniciarBtn.addEventListener('click', () => {
-      if (intervalo) return; // não permite iniciar duas vezes seguidas
+      if (intervalo) return;
 
-      // Exibe os dados inseridos
       const placa = placaInput.value.trim();
       const doca = docaInput.value.trim();
       const transportadora = transportadoraInput.value.trim();
 
-      const dadosInseridos = document.getElementById('dadosInseridos');
-      dadosInseridos.innerHTML = `
-        <h3>Dados Iniciados:</h3>
-        <p><strong>Placa:</strong> ${placa}</p>
-        <p><strong>Doca:</strong> ${doca}</p>
-        <p><strong>Transportadora:</strong> ${transportadora}</p>
-      `;
+      dadosInseridos.textContent =
+        `Dados Iniciados:\nPlaca: ${placa}\nDoca: ${doca}\nTransportadora: ${transportadora}`;
 
-      // Desabilita inputs para evitar alterações durante o contador
       placaInput.disabled = true;
       docaInput.disabled = true;
       transportadoraInput.disabled = true;
 
-      // Desabilita o botão iniciar e habilita parar e resetar
       iniciarBtn.disabled = true;
       pararBtn.disabled = false;
       resetarBtn.disabled = false;
 
-      // Inicia o contador
       intervalo = setInterval(atualizarContador, 1000);
     });
 
     pararBtn.addEventListener('click', () => {
-      if (intervalo) {
-        clearInterval(intervalo);
-        intervalo = null;
-        iniciarBtn.disabled = false;  // Permite continuar
-        pararBtn.disabled = true;
+      if (!intervalo) return;
+
+      const senha = prompt("Digite a senha para parar:");
+      if (senha !== SENHA_CORRETA) {
+        alert("Senha incorreta! Operação cancelada.");
+        return;
       }
+
+      clearInterval(intervalo);
+      intervalo = null;
+
+      // Enviar dados para a base (Google Apps Script)
+      enviarDados();
+
+      iniciarBtn.disabled = true; // não pode reiniciar sem resetar
+      pararBtn.disabled = true;
+      resetarBtn.disabled = false;
     });
 
     resetarBtn.addEventListener('click', () => {
@@ -207,24 +205,55 @@
       contadorElement.textContent = formatarTempo(totalSegundos);
       document.body.style.backgroundColor = '';
 
-      // Limpa dados exibidos
-      document.getElementById('dadosInseridos').innerHTML = '';
-
-      // Limpa e habilita inputs
-      placaInput.value = '';
-      docaInput.value = '';
-      transportadoraInput.value = '';
+      placaInput.value = "";
+      docaInput.value = "";
+      transportadoraInput.value = "";
       placaInput.disabled = false;
       docaInput.disabled = false;
       transportadoraInput.disabled = false;
 
-      // Ajusta botões
+      dadosInseridos.textContent = "";
+
       iniciarBtn.disabled = true;
       pararBtn.disabled = true;
       resetarBtn.disabled = true;
     });
 
-    // Inicializa estado dos botões e contador
+    function enviarDados() {
+      const placa = placaInput.value.trim();
+      const doca = docaInput.value.trim();
+      const transportadora = transportadoraInput.value.trim();
+      const tempo = formatarTempo(totalSegundos);
+
+      const url = "INSIRA_AQUI_A_URL_DO_SEU_WEB_APP_DO_GOOGLE_APPS_SCRIPT";
+
+      fetch(url, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          placa,
+          doca,
+          transportadora,
+          tempo
+        })
+      })
+        .then(res => res.json())
+        .then(res => {
+          if(res.status === "success") {
+            alert("Dados enviados com sucesso!");
+          } else {
+            alert("Erro ao enviar dados: " + (res.message || "Desconhecido"));
+          }
+        })
+        .catch(err => {
+          alert("Falha ao enviar dados: " + err);
+        });
+    }
+
+    // Inicialização
     contadorElement.textContent = formatarTempo(totalSegundos);
     document.body.style.backgroundColor = '';
     iniciarBtn.disabled = true;
