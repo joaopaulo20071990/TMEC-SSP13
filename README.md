@@ -1,4 +1,4 @@
-<MERCADO LIVRE>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
@@ -63,7 +63,7 @@
 </head>
 <body>
 
-  <h1>MERCADO LIVRE</h1>
+  <h1>TEMPO MÉDIO DE CARREGAMENTO SSP13</h1>
 
   <div id="contador">00:00:00</div>
 
@@ -83,7 +83,6 @@
   <div>
     <button id="iniciarBtn" disabled>Iniciar</button>
     <button id="pararBtn" disabled>Parar</button>
-    <!-- botão resetar removido -->
   </div>
 
   <div id="dadosInseridos"></div>
@@ -94,11 +93,10 @@
     const SENHA_CORRETA = "MELI123";
 
     let totalSegundos = 0;
-    const maxSegundos = 40 * 60; // 40 minutos
+    const maxSegundos = 40 * 60; // 40 minutos (pode ajustar se quiser)
     const contadorElement = document.getElementById('contador');
     const iniciarBtn = document.getElementById('iniciarBtn');
     const pararBtn = document.getElementById('pararBtn');
-    // resetarBtn removido
 
     const placaInput = document.getElementById('placa');
     const docaInput = document.getElementById('doca');
@@ -121,11 +119,11 @@
     }
 
     function atualizarFundo(segundos) {
-      if (segundos <= 15) {
+      if (segundos <= 15 * 60) {          // até 15 minutos (900 segundos)
         document.body.style.backgroundColor = 'green';
-      } else if (segundos <= 30) {
+      } else if (segundos <= 25 * 60) {   // entre 15 e 25 minutos (901 a 1500 segundos)
         document.body.style.backgroundColor = 'yellow';
-      } else {
+      } else {                            // acima de 25 minutos (> 1500 segundos)
         document.body.style.backgroundColor = 'red';
       }
     }
@@ -140,7 +138,6 @@
         intervalo = null;
         iniciarBtn.disabled = false;
         pararBtn.disabled = true;
-        // resetarBtn removido
       }
     }
 
@@ -173,7 +170,6 @@
 
       iniciarBtn.disabled = true;
       pararBtn.disabled = false;
-      // resetarBtn removido
 
       intervalo = setInterval(atualizarContador, 1000);
     });
@@ -192,7 +188,7 @@
 
       enviarDados();
 
-      // Aqui fazemos o reset automático (limpa campos, contador, etc)
+      // Reset automático após envio
       totalSegundos = 0;
       contadorElement.textContent = formatarTempo(totalSegundos);
       document.body.style.backgroundColor = '';
@@ -208,7 +204,6 @@
 
       iniciarBtn.disabled = true;
       pararBtn.disabled = true;
-      // resetarBtn removido
     });
 
     function enviarDados() {
@@ -253,7 +248,6 @@
     document.body.style.backgroundColor = '';
     iniciarBtn.disabled = true;
     pararBtn.disabled = true;
-    // resetarBtn removido
   </script>
 
 </body>
